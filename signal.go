@@ -1,4 +1,4 @@
-package byob
+package convai
 
 import (
 	uuid "github.com/satori/go.uuid"

@@ -1,4 +1,4 @@
-package byob
+package convai
 
 type ReachableUserResult struct {
 	Count uint64 `json:"count" msgpack:"count" mapstructure:"count"`

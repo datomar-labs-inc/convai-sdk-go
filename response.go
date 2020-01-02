@@ -1,4 +1,4 @@
-package byob
+package convai
 
 type Response struct {
 	Messages []Message `json:"messages" mapstructure:"messages" msgpack:"messages"`

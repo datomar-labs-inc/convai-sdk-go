@@ -1,4 +1,4 @@
-module github.com/datomar-labs-inc/byob-sdk-go
+module github.com/datomar-labs-inc/convai-sdk-go
 
 go 1.12
 

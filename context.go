@@ -1,8 +1,8 @@
-package byob
+package convai
 
 import uuid "github.com/satori/go.uuid"
 
-// RequestContext stores the context of a single byob request
+// RequestContext stores the context of a single convai request
 type RequestContext struct {
 	Flaggable
 	ID              uuid.UUID              `json:"id" mapstructure:"id" msgpack:"id"`

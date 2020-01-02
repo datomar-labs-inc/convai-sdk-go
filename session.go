@@ -1,4 +1,4 @@
-package byob
+package convai
 
 // Session is used to keep track of information pertaining to a user
 type Session struct {
