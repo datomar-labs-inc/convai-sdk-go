@@ -1,5 +1,11 @@
 package convai
 
+import (
+	"time"
+
+	uuid "github.com/satori/go.uuid"
+)
+
 type ReachableUserResult struct {
 	Count uint64 `json:"count" msgpack:"count" mapstructure:"count"`
 }
@@ -50,4 +56,29 @@ type UpdateUserDataInput struct {
 
 	// A list of keys to be remove from the user data, if the keys did not exist, nothing happens
 	Delete []string `json:"delete" msgpack:"delete" mapstructure:"delete"`
+}
+
+type UserQueryResult struct {
+	Users []SuperUser
+	Count uint64
+}
+
+type SuperUser struct {
+	ID            uuid.UUID              `json:"id" msgpack:"id"`
+	EnvironmentID uuid.UUID              `json:"environment_id" msgpack:"environment_id"`
+	Data          map[string]interface{} `json:"data" msgpack:"data"`
+	CreatedAt     *time.Time             `json:"createdAt,omitempty"`
+	UpdatedAt     *time.Time             `json:"updatedAt,omitempty"`
+	PlatformUsers []PlatformUser         `json:"platformUsers"`
+}
+
+type PlatformUser struct {
+	PlatformID    string                 `json:"platformId"`
+	EnvironmentID uuid.UUID              `json:"environmentId"`
+	Platform      string                 `json:"platform"`
+	Data          map[string]interface{} `json:"data"`
+	SuperUserID   uuid.UUID              `json:"superUserId"`
+	Session       *Session               `json:"session"`
+	CreatedAt     *time.Time             `json:"createdAt"`
+	UpdatedAt     *time.Time             `json:"updatedAt"`
 }

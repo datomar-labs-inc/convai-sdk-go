@@ -127,3 +127,16 @@ func (c *Client) UpdateUserData(superUserId string, input *UpdateUserDataInput) 
 
 	return res, nil
 }
+
+func (c *Client) QueryUsers(query *UserQuery) (*UserQueryResult, error) {
+	var res UserQueryResult
+
+	apiErr, err := c.makeRequestWithBody("POST", "/users/query", query, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
