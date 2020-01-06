@@ -17,10 +17,10 @@ type Message struct {
 	GraphID     *int64          `json:"graphId" mapstructure:"graphId" msgpack:"graphId"`
 	NodeID      *int64          `json:"nodeId" mapstructure:"nodeId" msgpack:"nodeId"`
 	Blocks      []ResponseBlock `json:"blocks" mapstructure:"blocks" msgpack:"blocks"`
+	Seq         int             `json:"seq" mapstructure:"seq" msgpack:"seq"`
 }
 
 type MessageConfig struct {
 	Text       string  `json:"text" mapstructure:"text" msgpack:"text"`
 	TypingTime float64 `json:"typingTime" mapstructure:"typingTime" msgpack:"typingTime"`
 }
-
