@@ -13,7 +13,7 @@ type ReachableUserResult struct {
 type BroadcastInput struct {
 	BroadcastType   string           `json:"broadcastType" msgpack:"broadcastType" mapstructure:"broadcastType"`
 	ContextModifier *ContextModifier `json:"contextModifier,omitempty" msgpack:"contextModifier" mapstructure:"contextModifier"`
-	Platform        string           `json:"platform" msgpack:"platform" mapstructure:"platform" binding:"required"`
+	Channel         string           `json:"channel" msgpack:"channel" mapstructure:"channel" binding:"required"`
 	UserQuery       UserQuery        `json:"userQuery" msgpack:"userQuery" mapstructure:"userQuery" binding:"required"`
 }
 
@@ -69,13 +69,13 @@ type SuperUser struct {
 	Data          map[string]interface{} `json:"data" msgpack:"data"`
 	CreatedAt     *time.Time             `json:"createdAt,omitempty"`
 	UpdatedAt     *time.Time             `json:"updatedAt,omitempty"`
-	PlatformUsers []PlatformUser         `json:"platformUsers"`
+	ChannelUsers  []ChannelUser          `json:"channelUsers"`
 }
 
-type PlatformUser struct {
-	PlatformID    string                 `json:"platformId"`
+type ChannelUser struct {
+	ChannelId     string                 `json:"channelId"`
 	EnvironmentID uuid.UUID              `json:"environmentId"`
-	Platform      string                 `json:"platform"`
+	Channel       string                 `json:"channel"`
 	Data          map[string]interface{} `json:"data"`
 	SuperUserID   uuid.UUID              `json:"superUserId"`
 	Session       *Session               `json:"session"`

@@ -10,8 +10,8 @@ type RequestContext struct {
 	Session         Session                `json:"session" mapstructure:"session" msgpack:"session"`
 	EnvironmentData map[string]interface{} `json:"envData" mapstructure:"envData" msgpack:"envData"`
 	Text            string                 `json:"text" mapstructure:"text" msgpack:"text"`
-	OriginPlatform  string                 `json:"originPlatform" mapstructure:"originPlatform" msgpack:"originPlatform"`
-	OriginalRequest interface{}            `json:"originalRequest" mapstructure:"originalRequest" msgpack:"originalRequest"`
+	Channel         string                 `json:"channel" mapstructure:"channel" msgpack:"channel"`
+	Source          interface{}            `json:"source" mapstructure:"source" msgpack:"source"`
 	IsStart         bool                   `json:"isStart" mapstructure:"isStart" msgpack:"isStart"`
 	IsTrigger       bool                   `json:"isTrigger" mapstructure:"isTrigger" msgpack:"isTrigger"`
 	Errors          []ExecError            `json:"errors" mapstructure:"errors" msgpack:"errors"`
@@ -21,12 +21,12 @@ type RequestContext struct {
 	LastError *ExecError `json:"lastError" mapstructure:"lastError" msgpack:"lastError"`
 }
 
-// Request user is holds the information for a user making a bot request
+// Source user is holds the information for a user making a bot request
 type RequestUser struct {
 	Flaggable
-	ID         uuid.UUID `json:"id" mapstructure:"id" msgpack:"id"`
-	PlatformID string    `json:"platformId" mapstructure:"platformId" msgpack:"platformId"`
-	Name       string    `json:"name" mapstructure:"name" msgpack:"name"`
+	ID        uuid.UUID `json:"id" mapstructure:"id" msgpack:"id"`
+	ChannelID string    `json:"channelId" mapstructure:"channelId" msgpack:"channelId"`
+	Name      string    `json:"name" mapstructure:"name" msgpack:"name"`
 }
 
 func (r *RequestContext) Error(err ExecError) {
