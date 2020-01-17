@@ -1,6 +1,7 @@
 package convai
 
 type ResponseBlock struct {
-	Type string `json:"t" mapstructure:"t" msgpack:"t"`
-	Data string `json:"d" mapstructure:"d" msgpack:"d"`
+	Type     string `json:"type" mapstructure:"type" msgpack:"type"`
+	Data     string `json:"data" mapstructure:"data" msgpack:"data"`
+	Position int    `json:"pos" mapstructure:"pos" msgpack:"pos"`
 }
