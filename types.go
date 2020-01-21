@@ -49,6 +49,142 @@ type UserQuery struct {
 	Mode   int64        `json:"mode" msgpack:"mode" mapstructure:"mode"`
 }
 
+type UQBuilder struct {
+	mode         int64
+	checks       []QueryCheck
+	currentCheck *QueryCheck
+	limit        int
+	offset       int
+}
+
+func UserQueryBuilder() *UQBuilder {
+	return &UQBuilder{}
+}
+
+func (u *UQBuilder) All() *UQBuilder {
+	u.mode = UQMAll
+	return u
+}
+
+func (u *UQBuilder) Any() *UQBuilder {
+	u.mode = UQMAny
+	return u
+}
+
+func (u *UQBuilder) None() *UQBuilder {
+	u.mode = UQMNone
+	return u
+}
+
+func (u *UQBuilder) Where(field string) *UQBuilder {
+	if u.currentCheck != nil {
+		u.checks = append(u.checks, *u.currentCheck)
+	}
+
+	u.currentCheck = &QueryCheck{
+		Field:     field,
+		Operation: UQEquals,
+		Values:    []string{},
+	}
+
+	return u
+}
+
+func (u *UQBuilder) Equals(values ...string) *UQBuilder {
+	if u.currentCheck == nil {
+		panic("cannot call equals without calling where first")
+	}
+
+	u.currentCheck.Operation = UQEquals
+	u.currentCheck.Values = values
+
+	return u
+}
+
+func (u *UQBuilder) NotEquals(values ...string) *UQBuilder {
+	if u.currentCheck == nil {
+		panic("cannot call not equals without calling where first")
+	}
+
+	u.currentCheck.Operation = UQNotEquals
+	u.currentCheck.Values = values
+
+	return u
+}
+
+func (u *UQBuilder) StartsWith(values ...string) *UQBuilder {
+	if u.currentCheck == nil {
+		panic("cannot call starts with without calling where first")
+	}
+
+	u.currentCheck.Operation = UQStartsWith
+	u.currentCheck.Values = values
+
+	return u
+}
+
+func (u *UQBuilder) GreaterThan(values ...string) *UQBuilder {
+	if u.currentCheck == nil {
+		panic("cannot call greater than without calling where first")
+	}
+
+	u.currentCheck.Operation = UQGreaterThan
+	u.currentCheck.Values = values
+
+	return u
+}
+
+func (u *UQBuilder) LessThan(values ...string) *UQBuilder {
+	if u.currentCheck == nil {
+		panic("cannot call less than without calling where first")
+	}
+
+	u.currentCheck.Operation = UQLessThan
+	u.currentCheck.Values = values
+
+	return u
+}
+
+func (u *UQBuilder) Exists() *UQBuilder {
+	if u.currentCheck == nil {
+		panic("cannot call exists without calling where first")
+	}
+
+	u.currentCheck.Operation = UQExists
+
+	return u
+}
+
+func (u *UQBuilder) NotExists() *UQBuilder {
+	if u.currentCheck == nil {
+		panic("cannot call not exists without calling where first")
+	}
+
+	u.currentCheck.Operation = UQNotExists
+	return u
+}
+
+func (u *UQBuilder) Limit(limit int) *UQBuilder {
+	u.limit = limit
+	return u
+}
+
+func (u *UQBuilder) Offset(offset int) *UQBuilder {
+	u.offset = offset
+	return u
+}
+
+func (u *UQBuilder) Build() *UserQuery {
+	if u.currentCheck != nil {
+		u.checks = append(u.checks, *u.currentCheck)
+	}
+
+	return &UserQuery{
+		Checks: u.checks,
+		Mode:   u.mode,
+	}
+}
+
 type UpdateUserDataInput struct {
 	// A list of keys and their values to be set on the user data
 	// If the key exists it will be overwritten
