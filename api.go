@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 type Client struct {
@@ -89,10 +91,10 @@ func (c *Client) makeRequestWithBody(method, url string, body interface{}, out i
 	}
 }
 
-func (c *Client) GetReachableUsers(query *UserQuery) (*ReachableUserResult, error) {
-	var res ReachableUserResult
+func (c *Client) Trigger(req *TriggerRequest) (*TriggerResult, error) {
+	var res TriggerResult
 
-	apiErr, err := c.makeRequestWithBody("POST", "/reachable-users", query, &res)
+	apiErr, err := c.makeRequestWithBody("POST", "/executions/trigger", req, &res)
 	if err != nil {
 		return nil, err
 	} else if apiErr != nil {
@@ -105,7 +107,7 @@ func (c *Client) GetReachableUsers(query *UserQuery) (*ReachableUserResult, erro
 func (c *Client) Broadcast(input *BroadcastInput) (*BroadcastResult, error) {
 	var res BroadcastResult
 
-	apiErr, err := c.makeRequestWithBody("POST", "/broadcast", input, &res)
+	apiErr, err := c.makeRequestWithBody("POST", "/executions/broadcast", input, &res)
 	if err != nil {
 		return nil, err
 	} else if apiErr != nil {
@@ -115,23 +117,75 @@ func (c *Client) Broadcast(input *BroadcastInput) (*BroadcastResult, error) {
 	return &res, nil
 }
 
-func (c *Client) UpdateUserData(superUserId string, input *UpdateUserDataInput) (map[string]interface{}, error) {
-	var res map[string]interface{}
+func (c *Client) QueryUsers(query *UserQuery) (*UserQueryResult, error) {
+	var res UserQueryResult
 
-	apiErr, err := c.makeRequestWithBody("PUT", fmt.Sprintf("/users/%s/data", superUserId), input, &res)
+	apiErr, err := c.makeRequestWithBody("POST", "/users/super/query", query, &res)
 	if err != nil {
 		return nil, err
 	} else if apiErr != nil {
 		return nil, apiErr
 	}
 
-	return res, nil
+	return &res, nil
 }
 
-func (c *Client) QueryUsers(query *UserQuery) (*UserQueryResult, error) {
-	var res UserQueryResult
+func (c *Client) QueryUsersReachable(query *UserQuery) (*ReachableUserResult, error) {
+	var res ReachableUserResult
 
-	apiErr, err := c.makeRequestWithBody("POST", "/users/query", query, &res)
+	apiErr, err := c.makeRequestWithBody("POST", "/users/super/query/reachable", query, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
+func (c *Client) MergeUsers(req *MergeUsersRequest) (*SuperUser, error) {
+	var res SuperUser
+
+	apiErr, err := c.makeRequestWithBody("POST", "/users/super/merge", req, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
+func (c *Client) DeleteSuperUser(id uuid.UUID) (*SuperUser, error) {
+	var res SuperUser
+
+	apiErr, err := c.makeRequestWithBody("DELETE", fmt.Sprintf("/users/super/%s", id.String()), nil, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
+func (c *Client) UpdateUserData(superUserId string, input *UpdateUserDataInput) (*SuperUser, error) {
+	var res SuperUser
+
+	apiErr, err := c.makeRequestWithBody("PUT", fmt.Sprintf("/users/super/%s", superUserId), input, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
+func (c *Client) DeleteChannelUser(userID string) (*ChannelUser, error) {
+	var res ChannelUser
+
+	apiErr, err := c.makeRequestWithBody("DELETE", fmt.Sprintf("/users/channel/%s", userID), nil, &res)
 	if err != nil {
 		return nil, err
 	} else if apiErr != nil {

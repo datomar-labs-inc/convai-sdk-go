@@ -17,9 +17,30 @@ type BroadcastInput struct {
 	UserQuery       UserQuery        `json:"userQuery" msgpack:"userQuery" mapstructure:"userQuery" binding:"required"`
 }
 
+type TriggerRequest struct {
+	ContextModifier *ContextModifier `json:"contextModifier,omitempty"`
+	ChannelID       string           `json:"channelId"`
+	Text            string           `json:"text"`
+	IsStart         bool             `json:"isStart"`
+	IsTrigger       bool             `json:"isTrigger"`
+	Raw             interface{}      `json:"raw,omitempty"`
+}
+
+type TriggerResult struct {
+	ID            uuid.UUID      `json:"id"`
+	EnvironmentID uuid.UUID      `json:"environmentId"`
+	Context       RequestContext `json:"context"`
+	StartTime     time.Time      `json:"startTime"`
+	EndTime       time.Time      `json:"endTime"`
+}
+
 type BroadcastResult struct {
 	Status string `json:"status" msgpack:"status" mapstructure:"status"`
 	Users  int    `json:"users" msgpack:"users" mapstructure:"users"`
+}
+
+type MergeUsersRequest struct {
+	SuperUserIDs []uuid.UUID `json:"superUserIds" binding:"required"`
 }
 
 const (

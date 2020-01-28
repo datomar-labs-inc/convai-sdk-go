@@ -1,10 +1,15 @@
 package convai
 
+import (
+	uuid "github.com/satori/go.uuid"
+)
+
 // Session is used to keep track of information pertaining to a user
 type Session struct {
 	Flaggable
-	Stack   Stack  `json:"stack" mapstructure:"stack" msgpack:"stack"`
-	Version string `json:"ver" mapstructure:"ver" msgpack:"ver"`
+	Stack   Stack     `json:"stack" mapstructure:"stack" msgpack:"stack"`
+	Version string    `json:"ver" mapstructure:"ver" msgpack:"ver"`
+	ID      uuid.UUID `json:"id" mapstructure:"id" msgpack:"id"`
 }
 
 type Frame struct {
