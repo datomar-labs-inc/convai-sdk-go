@@ -14,7 +14,8 @@ type ExecutionResult struct {
 type ExecutionLog struct {
 	GraphID         int64            `json:"gid" mapstructure:"gid" msgpack:"gid"`
 	NodeID          *int64           `json:"nid" mapstructure:"nid" msgpack:"nid"`
-	LinkID    *int64           `json:"linkId" mapstructure:"linkId" msgpack:"linkId"`
+	LinkSourceID    *int64           `json:"lsid" mapstructure:"lsid" msgpack:"lsid"`
+	LinkDestID      *int64           `json:"ldid" mapstructure:"ldid" msgpack:"ldid"`
 	ExecutionType   int16            `json:"ety" mapstructure:"ety" msgpack:"ety"`
 	ExecutionTime   int64            `json:"eti" mapstructure:"eti" msgpack:"eti"`
 	ContextModifier *ContextModifier `json:"cmo" mapstructure:"cmo" msgpack:"cmo"`
