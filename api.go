@@ -91,6 +91,19 @@ func (c *Client) makeRequestWithBody(method, url string, body interface{}, out i
 	}
 }
 
+func (c *Client) QueryExecutions(userID string) (*ChannelUser, error) {
+	var res ChannelUser
+
+	apiErr, err := c.makeRequestWithBody("DELETE", "/executions/query", nil, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
 func (c *Client) Trigger(req *TriggerRequest) (*TriggerResult, error) {
 	var res TriggerResult
 

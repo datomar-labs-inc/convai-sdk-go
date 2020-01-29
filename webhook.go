@@ -23,7 +23,7 @@ func NewWebhookManager() *WebhookManager {
 	}
 }
 
-// Handle registers a handler that will be called when a webhook request is received with a matching name field
+// Handle registers a handler that will be called when a webhook request is received with a matching name Field
 func (w *WebhookManager) Handle(name string, handler WebhookHandler) {
 	w.handlers[name] = handler
 }
