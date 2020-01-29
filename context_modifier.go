@@ -43,8 +43,7 @@ type ExecError struct {
 	GraphID    int64  `json:"graphId" mapstructure:"sgraphId" msgpack:"graphId"`
 	GraphName  string `json:"graphName" mapstructure:"graphName" msgpack:"graphName"`
 	NodeID     *int64 `json:"nodeId" mapstructure:"nodeId" msgpack:"nodeId"`
-	LinkSource *int64 `json:"linkSource" mapstructure:"linkSource" msgpack:"linkSource"`
-	LinkDest   *int64 `json:"linkDest" mapstructure:"linkDest" msgpack:"linkDest"`
+	LinkID *int64 `json:"linkId" mapstructure:"linkId" msgpack:"linkId"`
 	Message    string `json:"message" mapstructure:"message" msgpack:"message"`
 }
 
