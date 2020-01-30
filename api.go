@@ -91,10 +91,10 @@ func (c *Client) makeRequestWithBody(method, url string, body interface{}, out i
 	}
 }
 
-func (c *Client) QueryExecutions(userID string) (*ChannelUser, error) {
+func (c *Client) QueryExecutions() (*[]Execution, error) {
 	var res ChannelUser
 
-	apiErr, err := c.makeRequestWithBody("DELETE", "/executions/query", nil, &res)
+	apiErr, err := c.makeRequestWithBody("POST", "/executions/query", nil, &res)
 	if err != nil {
 		return nil, err
 	} else if apiErr != nil {

@@ -26,7 +26,6 @@ type RequestUser struct {
 	Flaggable
 	ID        uuid.UUID `json:"id" mapstructure:"id" msgpack:"id"`
 	ChannelID string    `json:"channelId" mapstructure:"channelId" msgpack:"channelId"`
-	Name      string    `json:"name" mapstructure:"name" msgpack:"name"`
 }
 
 func (r *RequestContext) Error(err ExecError) {
