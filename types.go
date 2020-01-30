@@ -23,15 +23,7 @@ type TriggerRequest struct {
 	Text            string           `json:"text"`
 	IsStart         bool             `json:"isStart"`
 	IsTrigger       bool             `json:"isTrigger"`
-	Raw             interface{}      `json:"raw,omitempty"`
-}
-
-type TriggerResult struct {
-	ID            uuid.UUID      `json:"id"`
-	EnvironmentID uuid.UUID      `json:"environmentId"`
-	Context       RequestContext `json:"context"`
-	StartTime     time.Time      `json:"startTime"`
-	EndTime       time.Time      `json:"endTime"`
+	Source          interface{}      `json:"source,omitempty"`
 }
 
 type BroadcastResult struct {
@@ -129,6 +121,8 @@ type QueryCheck struct {
 type UserQuery struct {
 	Checks []QueryCheck `json:"checks" msgpack:"checks" mapstructure:"checks"`
 	Mode   int64        `json:"mode" msgpack:"mode" mapstructure:"mode"`
+	Limit  int          `json:"limit" msgpack:"limit" mapstructure:"limit"`
+	Offset int          `json:"offset" msgpack:"offset" mapstructure:"offset"`
 }
 
 type UQBuilder struct {
@@ -140,7 +134,10 @@ type UQBuilder struct {
 }
 
 func UserQueryBuilder() *UQBuilder {
-	return &UQBuilder{}
+	return &UQBuilder{
+		limit:  10,
+		offset: 0,
+	}
 }
 
 func (u *UQBuilder) All() *UQBuilder {
@@ -264,5 +261,7 @@ func (u *UQBuilder) Build() *UserQuery {
 	return &UserQuery{
 		Checks: u.checks,
 		Mode:   u.mode,
+		Limit:  u.limit,
+		Offset: u.offset,
 	}
 }

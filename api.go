@@ -104,8 +104,8 @@ func (c *Client) QueryExecutions(matcher *ExecutionMatcher) (*ExecutionQueryResu
 	return &res, nil
 }
 
-func (c *Client) Trigger(req *TriggerRequest) (*TriggerResult, error) {
-	var res TriggerResult
+func (c *Client) Trigger(req *TriggerRequest) (*Execution, error) {
+	var res Execution
 
 	apiErr, err := c.makeRequestWithBody("POST", "/executions/trigger", req, &res)
 	if err != nil {
@@ -199,6 +199,32 @@ func (c *Client) DeleteChannelUser(userID string) (*ChannelUser, error) {
 	var res ChannelUser
 
 	apiErr, err := c.makeRequestWithBody("DELETE", fmt.Sprintf("/users/channel/%s", userID), nil, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
+func (c *Client) UpdateSession(userID string, input *UpdateUserDataInput) (*Session, error) {
+	var res Session
+
+	apiErr, err := c.makeRequestWithBody("PUT", fmt.Sprintf("/users/session/%s", userID), input, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
+func (c *Client) DeleteSession(userID string) (*Session, error) {
+	var res Session
+
+	apiErr, err := c.makeRequestWithBody("DELETE", fmt.Sprintf("/users/session/%s", userID), nil, &res)
 	if err != nil {
 		return nil, err
 	} else if apiErr != nil {
