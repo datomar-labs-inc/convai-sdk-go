@@ -31,7 +31,7 @@ type ExecutionMatcher struct {
 	MustNot []ExecutionQueryItem `json:"mustNot"`
 	Sort    []ExecutionSort      `json:"sort"`
 
-	NegateCurrent bool                `json:"NegateCurrent"`
+	NegateCurrent bool                `json:"negateCurrent"`
 	CurrentItem   *ExecutionQueryItem `json:"currentItem"`
 }
 
@@ -42,10 +42,10 @@ type ExecutionSort struct {
 
 type ExecutionQueryItem struct {
 	Op         int      `json:"op"`
-	Field      string   `json:"Field"`
-	Matcher    []string `json:"Matcher"`
-	LowerBound *string  `json:"LowerBound"`
-	UpperBound *string  `json:"UpperBound"`
+	Field      string   `json:"field"`
+	Matcher    []string `json:"matcher"`
+	LowerBound *string  `json:"lowerBound"`
+	UpperBound *string  `json:"upperBound"`
 }
 
 func (e *ExecutionMatcher) Where(field string) *ExecutionMatcher {
