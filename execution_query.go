@@ -2,8 +2,6 @@ package convai
 
 import (
 	"strings"
-
-	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -16,9 +14,8 @@ const (
 
 type Q map[string]interface{}
 
-func NewExecutionMatcher(envID uuid.UUID) *ExecutionMatcher {
+func NewExecutionMatcher() *ExecutionMatcher {
 	return &ExecutionMatcher{
-		EnvID:   envID.String(),
 		Filters: []ExecutionQueryItem{},
 		MustNot: []ExecutionQueryItem{},
 		Sort:    []ExecutionSort{},

@@ -43,6 +43,67 @@ type MergeUsersRequest struct {
 	SuperUserIDs []uuid.UUID `json:"superUserIds" binding:"required"`
 }
 
+type UpdateUserDataInput struct {
+	// A list of keys and their values to be set on the user data
+	// If the key exists it will be overwritten
+	Set map[string]interface{} `json:"set" msgpack:"set" mapstructure:"set"`
+
+	// A list of keys to be remove from the user data, if the keys did not exist, nothing happens
+	Delete []string `json:"delete" msgpack:"delete" mapstructure:"delete"`
+}
+
+type UserQueryResult struct {
+	Users []SuperUser
+	Count uint64
+}
+
+type SuperUser struct {
+	ID            uuid.UUID              `json:"id" msgpack:"id"`
+	EnvironmentID uuid.UUID              `json:"environment_id" msgpack:"environment_id"`
+	Data          map[string]interface{} `json:"data" msgpack:"data"`
+	CreatedAt     *time.Time             `json:"createdAt,omitempty"`
+	UpdatedAt     *time.Time             `json:"updatedAt,omitempty"`
+	ChannelUsers  []ChannelUser          `json:"channelUsers"`
+}
+
+type ChannelUser struct {
+	ChannelId     string                 `json:"channelId"`
+	EnvironmentID uuid.UUID              `json:"environmentId"`
+	Channel       string                 `json:"channel"`
+	Data          map[string]interface{} `json:"data"`
+	SuperUserID   uuid.UUID              `json:"superUserId"`
+	Session       *Session               `json:"session"`
+	CreatedAt     *time.Time             `json:"createdAt"`
+	UpdatedAt     *time.Time             `json:"updatedAt"`
+}
+
+type Execution struct {
+	ID                uuid.UUID              `json:"id" msgpack:"id" mapstructure:"id"`
+	UserID            uuid.UUID              `json:"userId" msgpack:"userId" mapstructure:"userId"`
+	ChannelUserID     string                 `json:"channelUserId" msgpack:"channelUserId" mapstructure:"channelUserId"`
+	SessionID         uuid.UUID              `json:"sessionId" msgpack:"sessionId" mapstructure:"sessionId"`
+	EnvironmentID     uuid.UUID              `json:"environmentId" msgpack:"environmentId" mapstructure:"environmentId"`
+	BlueprintID       uuid.UUID              `json:"blueprintId" msgpack:"blueprintId" mapstructure:"blueprintId"`
+	Data              map[string]interface{} `json:"data" msgpack:"data" mapstructure:"data"`
+	UserData          map[string]interface{} `json:"userData" msgpack:"userData" mapstructure:"userData"`
+	SessionData       map[string]interface{} `json:"sessionData" msgpack:"sessionData" mapstructure:"sessionData"`
+	Text              string                 `json:"text" msgpack:"text" mapstructure:"text"`
+	Channel           string                 `json:"channel" msgpack:"channel" mapstructure:"channel"`
+	Source            interface{}            `json:"source" msgpack:"source" mapstructure:"source"`
+	IsStart           bool                   `json:"isStart" msgpack:"isStart" mapstructure:"isStart"`
+	IsTrigger         bool                   `json:"isTrigger" msgpack:"isTrigger" mapstructure:"isTrigger"`
+	Errors            []ExecError            `json:"errors" msgpack:"errors" mapstructure:"errors"`
+	Response          *Response              `json:"response" msgpack:"response" mapstructure:"response"`
+	Logs              []ExecutionLog         `json:"logs" msgpack:"logs" mapstructure:"logs"`
+	ExecutionDuration int64                  `json:"executionDuration" msgpack:"executionDuration" mapstructure:"executionDuration"`
+	StartTime         time.Time              `json:"startTime" msgpack:"startTime" mapstructure:"startTime"`
+}
+
+type ExecutionQueryResult struct {
+	Executions []Execution `json:"executions" msgpack:"e" mapstructure:"executions"`
+	Total      int         `json:"total" msgpack:"t" mapstructure:"total"`
+}
+
 const (
 	UQEquals = iota
 	UQExists
@@ -204,38 +265,4 @@ func (u *UQBuilder) Build() *UserQuery {
 		Checks: u.checks,
 		Mode:   u.mode,
 	}
-}
-
-type UpdateUserDataInput struct {
-	// A list of keys and their values to be set on the user data
-	// If the key exists it will be overwritten
-	Set map[string]interface{} `json:"set" msgpack:"set" mapstructure:"set"`
-
-	// A list of keys to be remove from the user data, if the keys did not exist, nothing happens
-	Delete []string `json:"delete" msgpack:"delete" mapstructure:"delete"`
-}
-
-type UserQueryResult struct {
-	Users []SuperUser
-	Count uint64
-}
-
-type SuperUser struct {
-	ID            uuid.UUID              `json:"id" msgpack:"id"`
-	EnvironmentID uuid.UUID              `json:"environment_id" msgpack:"environment_id"`
-	Data          map[string]interface{} `json:"data" msgpack:"data"`
-	CreatedAt     *time.Time             `json:"createdAt,omitempty"`
-	UpdatedAt     *time.Time             `json:"updatedAt,omitempty"`
-	ChannelUsers  []ChannelUser          `json:"channelUsers"`
-}
-
-type ChannelUser struct {
-	ChannelId     string                 `json:"channelId"`
-	EnvironmentID uuid.UUID              `json:"environmentId"`
-	Channel       string                 `json:"channel"`
-	Data          map[string]interface{} `json:"data"`
-	SuperUserID   uuid.UUID              `json:"superUserId"`
-	Session       *Session               `json:"session"`
-	CreatedAt     *time.Time             `json:"createdAt"`
-	UpdatedAt     *time.Time             `json:"updatedAt"`
 }
