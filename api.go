@@ -90,19 +90,19 @@ func (c *Client) makeRequestWithBody(method, url string, body interface{}, out i
 		return nil, nil
 	}
 }
-
-func (c *Client) QueryExecutions() (*[]Execution, error) {
-	var res ChannelUser
-
-	apiErr, err := c.makeRequestWithBody("POST", "/executions/query", nil, &res)
-	if err != nil {
-		return nil, err
-	} else if apiErr != nil {
-		return nil, apiErr
-	}
-
-	return &res, nil
-}
+//
+// func (c *Client) QueryExecutions() (*[]Execution, error) {
+// 	var res ChannelUser
+//
+// 	apiErr, err := c.makeRequestWithBody("POST", "/executions/query", nil, &res)
+// 	if err != nil {
+// 		return nil, err
+// 	} else if apiErr != nil {
+// 		return nil, apiErr
+// 	}
+//
+// 	return &res, nil
+// }
 
 func (c *Client) Trigger(req *TriggerRequest) (*TriggerResult, error) {
 	var res TriggerResult
