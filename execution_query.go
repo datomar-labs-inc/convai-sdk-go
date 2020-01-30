@@ -36,7 +36,7 @@ type ExecutionMatcher struct {
 }
 
 type ExecutionSort struct {
-	Field     string `json:"Field"`
+	Field     string `json:"field"`
 	Ascending bool   `json:"asc"`
 }
 
