@@ -32,7 +32,8 @@ type BroadcastResult struct {
 }
 
 type MergeUsersRequest struct {
-	SuperUserIDs []uuid.UUID `json:"superUserIds" binding:"required"`
+	SuperUserIDs        []uuid.UUID `json:"superUserIds" binding:"required"`
+	PreferNewUserFields []string    `json:"preferNewUserFields,omitempty"`
 }
 
 type UpdateUserDataInput struct {
