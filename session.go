@@ -13,8 +13,9 @@ type Session struct {
 }
 
 type Frame struct {
-	Module int64 `json:"m" mapstructure:"m" msgpack:"m"`
-	Node   int64 `json:"n" mapstructure:"n" msgpack:"n"`
+	Module int64             `json:"m" mapstructure:"m" msgpack:"m"`
+	Node   int64             `json:"n" mapstructure:"n" msgpack:"n"`
+	Vars   map[string]string `json:"v" mapstructure:"v" msgpack:"v"`
 }
 
 type Stack struct {
