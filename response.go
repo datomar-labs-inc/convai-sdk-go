@@ -32,6 +32,7 @@ type XMLResponse struct {
 	XMLName         xml.Name            `xml:"response" json:"-" msgpack:"-" mapstructure:"-"`
 	InnerXML        string              `xml:",innerxml" json:"-" msgpack:"-" mapstructure:"-"`
 	Message         string              `json:"message" msgpack:"message" mapstructure:"message"`
+	Sender          *XMLSender          `xml:"sender,omitempty" json:"sender" msgpack:"sender"`
 	QuickReplies    []XMLQR             `xml:"qr" json:"quickReplies" msgpack:"quickReplies" mapstructure:"quickReplies"`
 	Phone           []XMLPhone          `xml:"phone" json:"phone" msgpack:"phone"`
 	Cards           []XMLCard           `xml:"card" json:"cards" msgpack:"cards"`
@@ -82,4 +83,10 @@ type XMLButton struct {
 	Text    string   `xml:",innerxml" json:"text" msgpack:"text" mapstructure:"text"`
 	Value   *string  `xml:"value,attr,omitempty" json:"value,omitempty" msgpack:"value,omitempty" mapstructure:"value,omitempty"`
 	URL     *string  `xml:"url,attr,omitempty" json:"url,omitempty" msgpack:"url,omitempty" mapstructure:"url,omitempty"`
+}
+
+type XMLSender struct {
+	XMLName xml.Name `xml:"sender" json:"-" msgpack:"-" mapstructure:"-"`
+	Name    string   `xml:",innerxml" json:"name" msgpack:"name" mapstructure:"name"`
+	Persona *string  `xml:"persona,attr,omitempty" json:"persona" msgpack:"persona"`
 }
