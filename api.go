@@ -91,6 +91,34 @@ func (c *Client) makeRequestWithBody(method, url string, body interface{}, out i
 	}
 }
 
+// Function to create a Super User and associated channel users
+func (c *Client) CreateSuperUser(request *CreateCombinedUserRequest) (*CreateCombinedUserResult, error) {
+	var res CreateCombinedUserResult
+
+	apiErr, err := c.makeRequestWithBody("POST", "/users/super/create", request, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
+// Function to create Channel Users for an existing super user
+func (c *Client) CreateChannelUsers(request *CreateChannelUsersRequest) (*CreateChannelUsersResult, error) {
+	var res CreateChannelUsersResult
+
+	apiErr, err := c.makeRequestWithBody("POST", "/users/channel/create", request, &res)
+	if err != nil {
+		return nil, err
+	} else if apiErr != nil {
+		return nil, apiErr
+	}
+
+	return &res, nil
+}
+
 func (c *Client) QueryExecutions(matcher *ExecutionMatcher) (*ExecutionQueryResult, error) {
 	var res ExecutionQueryResult
 

@@ -36,6 +36,45 @@ type MergeUsersRequest struct {
 	PreferNewUserFields []string    `json:"preferNewUserFields,omitempty"`
 }
 
+/*
+* Create Users Types
+ */
+type CreateCombinedUserRequest struct {
+	EnvironmentID uuid.UUID           `json:"environment_id"`
+	UserData      UserData            `json:"user_data"`
+	ChannelUsers  []CreateChannelUser `json:"channel_users"`
+}
+
+type UserData map[string]interface{}
+
+// Channel User definition for api creation
+type CreateChannelUser struct {
+	Channel   string   `json:"channel"`
+	ChannelID string   `json:"channel_id"`
+	Session   *Session `json:"session"`
+}
+
+// The IDs returned when creating a super user
+type CreateCombinedUserResult struct {
+	SuperUserID    uuid.UUID `json:"id"`
+	ChannelUserIDs []string  `json:"users"`
+}
+
+// The IDs returned when creating channel users
+type CreateChannelUsersResult struct {
+	ChannelUserIDs []string `json:"users"`
+}
+
+// Request to add a channel user to an existing user
+type CreateChannelUsersRequest struct {
+	EnvironmentID uuid.UUID           `json:"environment_id"`
+	SuperUserID   uuid.UUID           `json:"super_user_id"`
+	ChannelUsers  []CreateChannelUser `json:"channel_users"`
+}
+
+/*
+* Update Users Types
+ */
 type UpdateUserDataInput struct {
 	// A list of keys and their values to be set on the user data
 	// If the key exists it will be overwritten
