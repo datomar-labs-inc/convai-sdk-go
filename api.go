@@ -106,12 +106,12 @@ func (c *Client) CreateSuperUser(request *CreateCombinedUserRequest) (*CreateCom
 }
 
 // Function to create Channel Users for an existing super user
-func (c *Client) CreateChannelUsers(request *CreateChannelUsersRequest) (*CreateChannelUsersResult, error) {
+func (c *Client) CreateChannelUsers(request *CreateChannelUsersRequest) (*CreateChannelUsersResult, *APIError) {
 	var res CreateChannelUsersResult
 
 	apiErr, err := c.makeRequestWithBody("POST", "/users/channel/create", request, &res)
 	if err != nil {
-		return nil, err
+		return nil, &APIError{Code:500, Message: fmt.Sprintf("SDK error: %s", err.Error())}
 	} else if apiErr != nil {
 		return nil, apiErr
 	}
