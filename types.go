@@ -159,18 +159,21 @@ type QueryCheck struct {
 }
 
 type UserQuery struct {
-	Checks []QueryCheck `json:"checks" msgpack:"checks" mapstructure:"checks"`
-	Mode   int64        `json:"mode" msgpack:"mode" mapstructure:"mode"`
-	Limit  int          `json:"limit" msgpack:"limit" mapstructure:"limit"`
-	Offset int          `json:"offset" msgpack:"offset" mapstructure:"offset"`
+	Checks        []QueryCheck `json:"checks" msgpack:"checks" mapstructure:"checks"`
+	Mode          int64        `json:"mode" msgpack:"mode" mapstructure:"mode"`
+	Limit         int          `json:"limit" msgpack:"limit" mapstructure:"limit"`
+	Offset        int          `json:"offset" msgpack:"offset" mapstructure:"offset"`
+	ChannelSearch bool         `json:"channelSearch,omitempty" msgpack:"channelSearch,omitempty" mapstructure:"channelSearch,omitempty"`
 }
 
 type UQBuilder struct {
 	mode         int64
 	checks       []QueryCheck
 	currentCheck *QueryCheck
-	limit        int
-	offset       int
+	channelSearch bool
+
+	limit  int
+	offset int
 }
 
 func UserQueryBuilder() *UQBuilder {
@@ -192,6 +195,17 @@ func (u *UQBuilder) Any() *UQBuilder {
 
 func (u *UQBuilder) None() *UQBuilder {
 	u.mode = UQMNone
+	return u
+}
+
+// With .ChannelSearch()
+// id is the field for channel ID and it does a like search by default
+// channel is the field for channel and it does an equals
+
+// Option for searching channel users instead of super users
+func (u *UQBuilder) ChannelSearch() *UQBuilder {
+	u.channelSearch = true
+
 	return u
 }
 
