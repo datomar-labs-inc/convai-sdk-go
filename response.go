@@ -7,37 +7,38 @@ type Response struct {
 }
 
 type ResponseConfig struct {
-	Basic           []MessageConfig            `json:"messages" mapstructure:"messages" msgpack:"messages"`
-	SendNow         bool                       `json:"sendNow" mapstructure:"sendNow" msgpack:"sendNow"`
-	CustomResponses map[string][]MessageConfig `json:"customResponses" mapstructure:"customResponses" msgpack:"customResponses"`
+	Basic           MessageConfig            `json:"basic" mapstructure:"basic" msgpack:"basic"`
+	SendNow         bool                     `json:"sendNow" mapstructure:"sendNow" msgpack:"sendNow"`
+	CustomResponses map[string]MessageConfig `json:"customResponses" mapstructure:"customResponses" msgpack:"customResponses"`
 }
 
 type Message struct {
-	Text        string          `json:"text" mapstructure:"text" msgpack:"text"`
-	TypingTime  float64         `json:"typingTime" mapstructure:"typingTime" msgpack:"typingTime"`
-	ShouldBatch bool            `json:"shouldBatch" mapstructure:"shouldBatch" msgpack:"shouldBatch"`
-	GraphID     *int64          `json:"graphId" mapstructure:"graphId" msgpack:"graphId"`
-	NodeID      *int64          `json:"nodeId" mapstructure:"nodeId" msgpack:"nodeId"`
-	Blocks      []ResponseBlock `json:"blocks" mapstructure:"blocks" msgpack:"blocks"`
-	Data        XMLResponse     `json:"data" mapstructure:"data" msgpack:"data"`
-	Seq         int             `json:"seq" mapstructure:"seq" msgpack:"seq"`
+	ShouldBatch bool       `json:"shouldBatch" mapstructure:"shouldBatch" msgpack:"shouldBatch"`
+	GraphID     *int64     `json:"graphId" mapstructure:"graphId" msgpack:"graphId"`
+	NodeID      *int64     `json:"nodeId" mapstructure:"nodeId" msgpack:"nodeId"`
+	Message     XMLMessage `json:"data" mapstructure:"data" msgpack:"data"`
+	Seq         int        `json:"seq" mapstructure:"seq" msgpack:"seq"`
 }
 
 type MessageConfig struct {
-	Text       string  `json:"text" mapstructure:"text" msgpack:"text"`
-	TypingTime float64 `json:"typingTime" mapstructure:"typingTime" msgpack:"typingTime"`
+	ResponseXML string `json:"responseXML" mapstructure:"responseXML" msgpack:"responseXML"`
 }
 
 type XMLResponse struct {
-	XMLName         xml.Name            `xml:"response" json:"-" msgpack:"-" mapstructure:"-"`
-	InnerXML        string              `xml:",innerxml" json:"-" msgpack:"-" mapstructure:"-"`
-	Message         string              `json:"message" msgpack:"message" mapstructure:"message"`
-	Sender          *XMLSender          `xml:"sender,omitempty" json:"sender" msgpack:"sender"`
-	QuickReplies    []XMLQR             `xml:"qr" json:"quickReplies" msgpack:"quickReplies" mapstructure:"quickReplies"`
-	Phone           []XMLPhone          `xml:"phone" json:"phone" msgpack:"phone"`
-	Cards           []XMLCard           `xml:"card" json:"cards" msgpack:"cards"`
-	CardCollections []XMLCardCollection `xml:"cards" json:"cardCollections" msgpack:"cardCollections"`
-	Images          []XMLImage          `xml:"image" json:"images" msgpack:"images"`
+	XMLName  xml.Name     `xml:"response" json:"-" msgpack:"-" mapstructure:"-"`
+	Messages []XMLMessage `xml:"message" json:"messages" msgpack:"messages"`
+}
+
+type XMLMessage struct {
+	XMLName    xml.Name `xml:"message" json:"-" msgpack:"-" mapstructure:"-"`
+	TypingTime *float64 `xml:"typing,attr,omitempty" json:"typing,omitempty" msgpack:"typing,omitempty"`
+	Text       *string  `xml:"text,omitempty" json:"text,omitempty" msgpack:"text,omitempty"`
+	FBTag      *string  `xml:"fbTag,omitempty" json:"fbTag,omitempty" msgpack:"fbTag,omitempty"`
+
+	Sender         *XMLSender         `xml:"sender,omitempty" json:"sender,omitempty" msgpack:"sender,omitempty"`
+	QuickReplies   []XMLQR            `xml:"qr" json:"quickReplies,omitempty" msgpack:"quickReplies,omitempty" mapstructure:"quickReplies,omitempty"`
+	CardCollection *XMLCardCollection `xml:"cards,omitempty" json:"cardCollection,omitempty" msgpack:"cardCollection,omitempty"`
+	Image          *XMLImage          `xml:"image,omitempty" json:"image,omitempty" msgpack:"image,omitempty"`
 }
 
 type XMLQR struct {
@@ -76,6 +77,7 @@ type XMLImage struct {
 	Height  *uint64  `xml:"height,attr,omitempty" json:"height" msgpack:"height"`
 	X       *uint64  `xml:"x,attr,omitempty" json:"x" msgpack:"x"`
 	Y       *uint64  `xml:"y,attr,omitempty" json:"y" msgpack:"y"`
+	URL     string   `xml:"url,attr,omitempty" json:"url" msgpack:"url"`
 }
 
 type XMLButton struct {
@@ -90,3 +92,9 @@ type XMLSender struct {
 	Name    string   `xml:",innerxml" json:"name" msgpack:"name" mapstructure:"name"`
 	Persona *string  `xml:"persona,attr,omitempty" json:"persona" msgpack:"persona"`
 }
+
+type XMLTextRandomizer struct {
+	XMLName xml.Name `xml:"random" json:"-" msgpack:"-" mapstructure:"-"`
+	Text    []string `xml:"text" json:"text" msgpack:"text"`
+}
+
